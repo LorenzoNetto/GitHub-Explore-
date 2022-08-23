@@ -5,6 +5,7 @@ import { TextInput } from 'react-native';
 
 import { Background } from '../../components/Background';
 import { Card } from '../../components/Card';
+import { RepositoryProps } from '../../contexts/RepositoriesProvider';
 
 import { useRepositories } from '../../hooks/useRepositories';
 
@@ -42,7 +43,17 @@ export function Dashboard() {
      * - call addRepository function sending inputText value;
      * - clean inputText value.
      */
+
+    addRepository(inputText); 
+    setInputText(''); 
+    
+  } 
+
+  function handleSeachRepository(text: string){
+    setInputText(text)
+    console.log(text)
   }
+
 
   function handleRepositoryPageNavigation(id: number) {
     /**
@@ -53,6 +64,12 @@ export function Dashboard() {
      *  repositoryId: id of the repository
      * })
      */
+
+    navigate('Repository', {
+      repositoryId: id
+    })
+
+    
   }
 
   return (
@@ -66,6 +83,7 @@ export function Dashboard() {
               ref={inputRef}
               placeholder="Digite aqui 'usuário/repositório'"
               value={inputText}
+              onChangeText={handleSeachRepository}
               /**
                * TODO - update inputText value when input text value 
                * changes:
@@ -80,11 +98,7 @@ export function Dashboard() {
             <InputButton
               testID="input-button"
               onPress={handleAddRepository}
-              /**
-               * TODO - ensure to disable button when inputText is 
-               * empty (use disabled prop to this):
-               * disabled={CONDITION HERE}
-               */
+              disabled={!!inputText ? false : true} 
             >
               <Icon name="search" size={20} />
             </InputButton>
